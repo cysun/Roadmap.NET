@@ -1,9 +1,36 @@
 {
-  "Logging": {
-    "LogLevel": {
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=roadmap;Username=cysun;Password=abcd"
+  },
+  "OIDC": {
+    "Authority": "https://identity.cysun.org",
+    "ClientId": "roadmap-webapp",
+    "ClientSecret": "****"
+  },
+  "Serilog": {
+    "Using": [
+      "Serilog.Sinks.File"
+    ],
+    "WriteTo": [
+      {
+        "Name": "File",
+        "Args": {
+          "path": "/Users/cysun/Temp/logs/roadmap.txt",
+          "rollingInterval": "Day",
+          "retainedFileCountLimit": null
+        }
+      }
+    ],
+    "MinimumLevel": {
       "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    },
+    "Enrich": [
+      "FromLogContext"
+    ]
   },
   "AllowedHosts": "*"
 }
