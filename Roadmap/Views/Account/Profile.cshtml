@@ -1,10 +1,52 @@
+@model User
 @{
     ViewData["Title"] = "Profile";
 }
-<p>Account Claims</p>
-<ul>
-    @foreach (var claim in User.Claims)
-    {
-        <li>@claim.Type: @claim.Value</li>
-    }
-</ul>
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Account</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <span class="form-control">@Model.FirstName</span>
+                            <label>First Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <span class="form-control">@Model.LastName</span>
+                            <label>Last Name</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <span class="form-control">@Model.Email</span>
+                            <label>Email</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <span class="form-control">@Model.CampusId</span>
+                            <label>CIN</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">Plans</div>
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+</div>

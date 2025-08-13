@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
@@ -60,10 +61,19 @@ services.AddAuthentication(options =>
         };
     });
 
+services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+});
+
 services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 });
+
+services.AddSingleton<AppMapper>();
+
+services.AddScoped<UserService>();
 
 // Build App
 
@@ -79,7 +89,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.MapStaticAssets();
+// MapStaticAssets() introduced in .NET 9 is supposed to be better than UseStaticFiles(), but for some
+// reason even when we call MapStaticAssets() before UseAuthentication(), it still requires authentication
+// (from the FallbackPolicy) to access static files.
+app.UseStaticFiles();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
